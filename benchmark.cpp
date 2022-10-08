@@ -34,7 +34,6 @@
 extern void square_dgemm(int, double*, double*, double*);
 extern void square_dgemm_blocked(int, int, double*, double*, double*) ;
 extern const char* dgemm_desc;
-static char markerName[]="MMULMarker";
 
 void reference_dgemm(int n, double alpha, double* A, double* B, double* C) {
     cblas_dgemm(CblasColMajor, CblasNoTrans, CblasNoTrans, n, n, n, alpha, A, n, B, n, 1., C, n);
@@ -107,7 +106,7 @@ int main(int argc, char** argv)
       // in parallel region
       LIKWID_MARKER_THREADINIT;
       // Register region name
-      LIKWID_MARKER_REGISTER(markerName);
+      LIKWID_MARKER_REGISTER(MY_MARKER_REGION_NAME);
    }
 
    std::cout << std::fixed << std::setprecision(4);

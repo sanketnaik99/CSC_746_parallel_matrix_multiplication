@@ -19,16 +19,15 @@ void square_dgemm(int n, double* A, double* B, double* C)
    // after the matrix multiply code but before the end of the parallel code block.
 
    // std::cout << "Insert your basic matrix multiply, openmp-parallel edition here " << std::endl;
-   static char markerName[]="MMULMarker";
 
 
    for (int i = 0; i < n; i++){
       for (int j = 0; j < n; j++){
          #pragma omp parallel for reduction (+:C[i + j*n])
          for (int k = 0; k < n; k++){ 
-            LIKWID_MARKER_START(markerName);
+            LIKWID_MARKER_START(MY_MARKER_REGION_NAME);
             C[i + j*n] += A[i + k*n] * B[k + j*n];
-            LIKWID_MARKER_STOP(markerName);
+            LIKWID_MARKER_STOP(MY_MARKER_REGION_NAME);
          }
       }
    }

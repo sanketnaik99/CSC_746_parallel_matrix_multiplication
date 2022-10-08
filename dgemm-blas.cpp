@@ -13,14 +13,13 @@ const char* dgemm_desc = "Reference dgemm.";
  * via the standard FORTRAN interface - hence the reference semantics.
  */
 void square_dgemm(int n, double* A, double* B, double* C) {
-   static char markerName[]="MMULMarker";
 
 #ifdef LIKWID_PERFMON
-      LIKWID_MARKER_START(markerName);
+      LIKWID_MARKER_START(MY_MARKER_REGION_NAME);
 #endif
     cblas_dgemm(CblasColMajor, CblasNoTrans, CblasNoTrans, n, n, n, 1., A, n, B, n, 1., C, n);
 #ifdef LIKWID_PERFMON
-      LIKWID_MARKER_STOP(markerName);
+      LIKWID_MARKER_STOP(MY_MARKER_REGION_NAME);
 #endif
 
 }
