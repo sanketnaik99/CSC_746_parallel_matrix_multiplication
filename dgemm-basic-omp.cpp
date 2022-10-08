@@ -23,13 +23,13 @@ void square_dgemm(int n, double* A, double* B, double* C)
 
 
    for (int i = 0; i < n; i++){
-      LIKWID_MARKER_START(markerName);
       for (int j = 0; j < n; j++){
          #pragma omp parallel for reduction (+:C[i + j*n])
          for (int k = 0; k < n; k++){ 
+            LIKWID_MARKER_START(markerName);
             C[i + j*n] += A[i + k*n] * B[k + j*n];
+            LIKWID_MARKER_STOP(markerName);
          }
       }
    }
-   LIKWID_MARKER_STOP(markerName);
 }
