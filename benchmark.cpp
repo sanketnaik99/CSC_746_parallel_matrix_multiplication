@@ -28,13 +28,13 @@
 #include <string.h>
 #include <unistd.h>
 #include <omp.h>
-
 #include "likwid-stuff.h"
 
 // external definitions for mmul's
 extern void square_dgemm(int, double*, double*, double*);
 extern void square_dgemm_blocked(int, int, double*, double*, double*) ;
 extern const char* dgemm_desc;
+static char markerName[]="MMULMarker";
 
 void reference_dgemm(int n, double alpha, double* A, double* B, double* C) {
     cblas_dgemm(CblasColMajor, CblasNoTrans, CblasNoTrans, n, n, n, alpha, A, n, B, n, 1., C, n);
@@ -107,7 +107,7 @@ int main(int argc, char** argv)
       // in parallel region
       LIKWID_MARKER_THREADINIT;
       // Register region name
-      LIKWID_MARKER_REGISTER(MY_MARKER_REGION_NAME);
+      LIKWID_MARKER_REGISTER(markerName);
    }
 
    std::cout << std::fixed << std::setprecision(4);
@@ -115,6 +115,7 @@ int main(int argc, char** argv)
 
    // set up the problem sizes
    int default_problem_sizes[] = {128, 512, 2048};
+   // int default_problem_sizes[] = {4};
    std::vector<int> test_sizes;
 
    if (cmdline_N > 0)
@@ -130,6 +131,7 @@ int main(int argc, char** argv)
 #ifdef BLOCKED
    // set up the block sizes
    int default_block_sizes[] = {4, 16, 64};
+   // int default_block_sizes[] = {2};
    std::vector<int> block_sizes;
 
    if (cmdline_B > 0)
