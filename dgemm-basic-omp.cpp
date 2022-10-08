@@ -31,5 +31,5 @@ void square_dgemm(int n, double* A, double* B, double* C)
          }
       }
    }
-   LIKWID_MARKER_START(markerName);
+   LIKWID_MARKER_STOP(markerName);
 }
