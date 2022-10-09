@@ -21,14 +21,14 @@ void square_dgemm(int n, double* A, double* B, double* C)
    // std::cout << "Insert your basic matrix multiply, openmp-parallel edition here " << std::endl;
 
 
+   LIKWID_MARKER_START(MY_MARKER_REGION_NAME);
    for (int i = 0; i < n; i++){
       for (int j = 0; j < n; j++){
          #pragma omp parallel for reduction (+:C[i + j*n])
          for (int k = 0; k < n; k++){ 
-            LIKWID_MARKER_START(MY_MARKER_REGION_NAME);
             C[i + j*n] += A[i + k*n] * B[k + j*n];
-            LIKWID_MARKER_STOP(MY_MARKER_REGION_NAME);
          }
       }
    }
+   LIKWID_MARKER_STOP(MY_MARKER_REGION_NAME);
 }
