@@ -21,7 +21,8 @@ export OMP_PROC_BIND=spread
 # use PERF_COUNTER_GROUP to tell likwif-perfctr which perf counter group to monitor
 # the default value here, HBM_CACHE, exists on Cori's KNL nodes, but may not be present
 # on other processors
-export PERF_COUNTER_GROUP=HBM_CACHE
+# export PERF_COUNTER_GROUP=HBM_CACHE
+export PERF_COUNTER_GROUP=FLOPS_DP
 
 # use the MARKER_FLAG variable to activate LIKWID's marker API, which will result in 
 # perf counter data being collected only in the region of code surrounded by marker start/stop
