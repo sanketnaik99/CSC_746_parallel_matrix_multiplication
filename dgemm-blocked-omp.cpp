@@ -11,7 +11,7 @@ const char* dgemm_desc = "Blocked dgemm, OpenMP-enabled";
  *  C := C + A * B
  * where A, B, and C are n-by-n matrices stored in column-major format.
  * On exit, A and B maintain their input values. */
-void copy_from_matrix_to_block(double* Mat, int n, int block_size, int i, int j, double* MatLocal, bool doPrint){
+void copy_from_matrix_to_block(double* Mat, int n, int block_size, int i, int j, double* MatLocal){
    for (int a = 0; a < block_size; a++){
       for (int b = 0; b < block_size; b++){
          MatLocal[a + b*block_size] = Mat[i+a + (j+b)*n];
@@ -58,11 +58,11 @@ void square_dgemm_blocked(int n, int block_size, double* A, double* B, double* C
    for (int i = 0; i < n_blocks; i++){
       for (int j = 0; j < n_blocks; j++){
          
-         copy_from_matrix_to_block(C, n, block_size, i*block_size, j*block_size, CLocal, true);
+         copy_from_matrix_to_block(C, n, block_size, i*block_size, j*block_size, CLocal);
 
          for (int k = 0; k < n_blocks; k++){
-            copy_from_matrix_to_block(A, n, block_size, i*block_size, k*block_size, ALocal, false);
-            copy_from_matrix_to_block(B, n, block_size, k*block_size, j*block_size, BLocal, false);
+            copy_from_matrix_to_block(A, n, block_size, i*block_size, k*block_size, ALocal);
+            copy_from_matrix_to_block(B, n, block_size, k*block_size, j*block_size, BLocal);
             
             square_dgemm_local(block_size, ALocal, BLocal, CLocal);
          }
