@@ -22,8 +22,8 @@ void square_dgemm(int n, double* A, double* B, double* C)
 
    #pragma omp parallel 
    { LIKWID_MARKER_START(MY_MARKER_REGION_NAME);
+   #pragma omp for collapse(2)
    for (int i = 0; i < n; i++){
-      #pragma omp for
       for (int j = 0; j < n; j++){
          for (int k = 0; k < n; k++){ 
             C[i + j*n] += A[i + k*n] * B[k + j*n];
