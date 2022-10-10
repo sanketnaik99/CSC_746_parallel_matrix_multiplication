@@ -54,7 +54,7 @@ void square_dgemm_blocked(int n, int block_size, double* A, double* B, double* C
    double *BLocal = (double *)malloc(sizeof(double)*block_size*block_size);
    double *CLocal = (double *)malloc(sizeof(double)*block_size*block_size);
 
-   #pragma omp parallel for collapse(2)
+   #pragma omp for collapse(2)
    for (int i = 0; i < n_blocks; i++){
       for (int j = 0; j < n_blocks; j++){
          
