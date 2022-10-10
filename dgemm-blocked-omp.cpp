@@ -45,14 +45,14 @@ void square_dgemm_blocked(int n, int block_size, double* A, double* B, double* C
    // but before your matrix multiply code, and then include LIKWID_MARKER_STOP(MY_MARKER_REGION_NAME)
    // after the matrix multiply code but before the end of the parallel code block.
 
-   std::cout << "Insert your blocked matrix multiply with copy optimization, openmp-parallel edition here " << std::endl;
+   // std::cout << "Insert your blocked matrix multiply with copy optimization, openmp-parallel edition here " << std::endl;
+   #pragma omp parallel
+   { LIKWID_MARKER_START(MY_MARKER_REGION_NAME);
+   
    int n_blocks = n/block_size;
    double *ALocal = (double *)malloc(sizeof(double)*block_size*block_size);
    double *BLocal = (double *)malloc(sizeof(double)*block_size*block_size);
    double *CLocal = (double *)malloc(sizeof(double)*block_size*block_size);
-
-   #pragma omp parallel
-   { LIKWID_MARKER_START(MY_MARKER_REGION_NAME);
 
    #pragma omp parallel for collapse(2)
    for (int i = 0; i < n_blocks; i++){
@@ -70,11 +70,9 @@ void square_dgemm_blocked(int n, int block_size, double* A, double* B, double* C
       }
    }
 
-   LIKWID_MARKER_STOP(MY_MARKER_REGION_NAME); }
-
-
    free((void *)ALocal);
    free((void *)BLocal);
    free((void *)CLocal);
 
+   LIKWID_MARKER_STOP(MY_MARKER_REGION_NAME); }
 }
